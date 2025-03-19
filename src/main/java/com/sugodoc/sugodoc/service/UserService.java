@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.sugodoc.sugodoc.domain.Role;
 import com.sugodoc.sugodoc.domain.User;
+import com.sugodoc.sugodoc.domain.dto.RegisterDTO;
 import com.sugodoc.sugodoc.repository.RoleRepository;
 import com.sugodoc.sugodoc.repository.UserRepository;
 
@@ -38,5 +39,13 @@ public class UserService {
 
     public Role getRoleById(long id) {
         return this.roleRepository.findById(id);
+    }
+
+    // mapper (transfer từ registerDTO sang object User)
+    public User registerDTOtoUser(RegisterDTO registerDTO){
+        User user = new User();
+        user.setFullName(registerDTO.getFirstName() + " " + registerDTO.getLastName());
+        user.setEmail(registerDTO.getEmail());
+        return user;
     }
 }

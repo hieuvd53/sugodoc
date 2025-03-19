@@ -51,14 +51,29 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3">
+                                            <c:set var="nameHasBindError">
+                                                <form:errors path="email" />
+                                            </c:set>
                                             <label for="email" class="form-label">Email:</label>
-                                            <form:input type="email" class="form-control" path="email"/>
+                                            <form:input type="email"
+                                                        class="form-control ${not empty nameHasBindError? 'is-invalid':''}"
+                                                        path="email"/>
+                                            <form:errors path="email" cssClass="invalid-feedback"/>
+
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
+                                            <c:set var="nameHasBindError">
+                                                <form:errors path="password" />
+                                            </c:set>
+
                                             <label for="password" class="form-label">Password:</label>
-                                            <form:input type="password" class="form-control" path="password"/>
+                                            <form:input type="password"
+                                                        class="form-control ${not empty nameHasBindError? 'is-invalid':''}"
+                                                        path="password"/>
+                                            <form:errors path="password" cssClass="invalid-feedback" />
+
                                         </div>
                                     </div>
                                 </div>

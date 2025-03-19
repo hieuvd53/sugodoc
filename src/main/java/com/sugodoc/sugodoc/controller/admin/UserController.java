@@ -6,13 +6,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sugodoc.sugodoc.domain.User;
 import com.sugodoc.sugodoc.service.UserService;
+
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -48,9 +53,22 @@ public class UserController {
     }
 
     // insert process
-    @RequestMapping(value = "/admin/user/insert", method = RequestMethod.POST)
+    @PostMapping("/admin/user/insert")
     public String insertUser(Model model,
-        @ModelAttribute("newUser") User newUser){
+        @ModelAttribute("newUser") @Valid User newUser,
+        BindingResult newUserBindingResult
+        ){
+
+        //validate
+        List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        for (FieldError error : errors ) {
+            System.out.println (error.getField() + " - " + error.getDefaultMessage());
+        }
+
+        // nếu có lỗi return lai page create và hiển thị thông báo lỗi
+        if(newUserBindingResult.hasErrors()){
+            return "/admin/user/create";
+        }
 
         String hassPassword = this.passwordEncoder.encode(newUser.getPassword());
         newUser.setPassword(hassPassword);
